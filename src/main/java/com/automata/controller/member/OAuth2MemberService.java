@@ -1,5 +1,6 @@
 package com.automata.controller.member;
 
+import com.automata.domain.member.Member;
 import com.automata.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;
@@ -23,9 +24,10 @@ public class OAuth2MemberService implements OAuth2UserService, AuthenticationFai
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2UserService delegate = new DefaultOAuth2UserService();
         OAuth2User oAuth2User = delegate.loadUser(userRequest);
-        String username = oAuth2User.getName();
-        memberRepository.findByName(username).orElseThrow(() -> new OAuth2AuthenticationException("Could not found user" + username));
-        return oAuth2User;
+        Member member = new Member();
+        member.setName(oAuth2User.getAttribute("name"));
+        member.setEmail(oAuth2User.getAttribute("email"));
+        return member;
     }
 
     @Override

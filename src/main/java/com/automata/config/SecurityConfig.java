@@ -19,7 +19,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests((requests) -> requests
-                        .antMatchers("/", "/index", "/member/new", "/member/oauth/new").permitAll()
+                        .antMatchers("/", "/index", "/member/new", "/member/oauth/new", "/member/logout").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form
@@ -27,11 +27,16 @@ public class SecurityConfig {
                         .permitAll()
                 )
                 .oauth2Login((oauth) -> oauth
-                        .loginPage("/member/oauth/loginForm")
+                        .loginPage("/member/login")
+                        .defaultSuccessUrl("/member/oauth/new")
                         .permitAll()
-                        .failureUrl("/member/oauth/new")
+//                        .failureUrl("/member/oauth/new")
                 )
-                .logout(LogoutConfigurer::permitAll);
+                .logout((out) -> out
+                        .logoutUrl("/member/logout")
+                        .logoutSuccessUrl("/member/logout")
+                        .deleteCookies("JSESSIONID")
+                );
 
         return http.build();
     }

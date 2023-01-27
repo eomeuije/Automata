@@ -6,6 +6,7 @@ import com.automata.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -47,7 +48,17 @@ public class MemberController {
     }
 
     @GetMapping("/oauth/new")
-    public String newOAuth(OAuth2UserRequest userRequest) {
+    public String newOAuth(Model model, @AuthenticationPrincipal Member member) {
         return "/member/oauth/new";
+    }
+
+    @GetMapping("/logout")
+    public String memberLogoutGet(Model model) {
+        return "redirect:/";
+    }
+
+    @PostMapping("/logout")
+    public String memberLogoutPost(Model model) {
+        return "redirect:/";
     }
 }

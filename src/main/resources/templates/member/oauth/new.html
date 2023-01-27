@@ -4,6 +4,8 @@
     <title>Spring Security Example </title>
 </head>
 <body>
-<form action="" method="get"></form>
+<form th:action="@{/member/oauth/new}" method="post">
+    <div><input type="submit" value="Sign In"/></div>
+</form>
 </body>
 </html>

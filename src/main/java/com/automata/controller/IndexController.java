@@ -1,6 +1,7 @@
 package com.automata.controller;
 
 import com.automata.domain.member.Member;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,9 +22,7 @@ public class IndexController {
     }
 
     @GetMapping("/hello")
-    public String hello(Model model) {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Member member = (Member) principal;
+    public String hello(Model model, @AuthenticationPrincipal Member member) {
         model.addAttribute("name", member.getName());
         return "hello";
     }
