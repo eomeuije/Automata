@@ -3,6 +3,7 @@ package com.automata.controller.member;
 import com.automata.domain.member.Member;
 import com.automata.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -50,9 +51,9 @@ public class MemberController {
 
     @PostMapping("/oauth/new")
     public String newOAuthRequest(Model model, HttpServletRequest request) {
-        OAuth2UserRequest oAuth2UserRequest = memberService.findOAuth2UserBySession(request.getSession());
-        OAuth2User member = memberService.login(oAuth2UserRequest);
-        memberService.save((Member) member);
+        Authentication authentication = memberService.findOAuth2UserBySession(request.getSession());
+        memberService.login(authentication);
+        memberService.save((Member) authentication.getPrincipal());
         return "redirect:/";
     }
 }

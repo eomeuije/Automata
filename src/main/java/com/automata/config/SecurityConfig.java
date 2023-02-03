@@ -2,6 +2,8 @@ package com.automata.config;
 
 import com.automata.repository.MemberRepository;
 import com.automata.service.MemberAuthorizationFailureHandler;
+import com.automata.service.MemberService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,6 +13,9 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    @Autowired
+    MemberService memberService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -26,7 +31,7 @@ public class SecurityConfig {
                 .oauth2Login((oauth) -> oauth
                         .loginPage("/member/login")
 //                        .defaultSuccessUrl("/member/oauth/new", true)
-                        .failureHandler(new MemberAuthorizationFailureHandler())
+                        .successHandler(memberService)
                         .permitAll()
                 )
                 .logout((out) -> out
