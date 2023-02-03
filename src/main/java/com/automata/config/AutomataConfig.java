@@ -1,6 +1,5 @@
 package com.automata.config;
 
-import com.automata.controller.member.OAuth2MemberService;
 import com.automata.repository.MemberRepository;
 import com.automata.repository.SpringJpaMemberRepository;
 import com.automata.service.MemberService;
@@ -20,10 +19,5 @@ public class AutomataConfig {
     @Bean
     public MemberService memberService() {
         return new MemberService(PasswordEncoderFactories.createDelegatingPasswordEncoder());
-    }
-
-    @Bean
-    public OAuth2MemberService oAuth2MemberService () {
-        return new OAuth2MemberService();
     }
 }

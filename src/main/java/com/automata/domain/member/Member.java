@@ -22,6 +22,16 @@ public class Member implements UserDetails, OAuth2User {
 
     private String name;
 
+    private String nickName;
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
     private String email;
 
     private String password;

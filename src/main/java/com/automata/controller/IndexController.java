@@ -2,11 +2,11 @@ package com.automata.controller;
 
 import com.automata.domain.member.Member;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistration;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class IndexController {
@@ -22,8 +22,9 @@ public class IndexController {
     }
 
     @GetMapping("/hello")
-    public String hello(Model model, @AuthenticationPrincipal Member member) {
+    public String hello(Model model, @AuthenticationPrincipal Member member, HttpServletRequest request, HttpServletRequest sr) {
         model.addAttribute("name", member.getName());
+        model.addAttribute("nickName", member.getNickName());
         return "hello";
     }
 }

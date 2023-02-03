@@ -1,24 +1,20 @@
 package com.automata.controller.member;
 
 import com.automata.domain.member.Member;
-import com.automata.repository.MemberRepository;
 import com.automata.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
-import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/member")
@@ -48,17 +44,15 @@ public class MemberController {
     }
 
     @GetMapping("/oauth/new")
-    public String newOAuth(Model model, @AuthenticationPrincipal Member member) {
+    public String newOAuthRequest(Model model) {
         return "/member/oauth/new";
     }
 
-    @GetMapping("/logout")
-    public String memberLogoutGet(Model model) {
-        return "redirect:/";
-    }
-
-    @PostMapping("/logout")
-    public String memberLogoutPost(Model model) {
+    @PostMapping("/oauth/new")
+    public String newOAuthRequest(Model model, HttpServletRequest request) {
+        OAuth2UserRequest oAuth2UserRequest = memberService.findOAuth2UserBySession(request.getSession());
+        OAuth2User member = memberService.login(oAuth2UserRequest);
+        memberService.save((Member) member);
         return "redirect:/";
     }
 }

@@ -1,19 +1,16 @@
 package com.automata.config;
 
 import com.automata.repository.MemberRepository;
-import com.automata.repository.SpringJpaMemberRepository;
-import com.automata.service.MemberService;
+import com.automata.service.MemberAuthorizationFailureHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -28,13 +25,13 @@ public class SecurityConfig {
                 )
                 .oauth2Login((oauth) -> oauth
                         .loginPage("/member/login")
-                        .defaultSuccessUrl("/member/oauth/new")
+//                        .defaultSuccessUrl("/member/oauth/new", true)
+                        .failureHandler(new MemberAuthorizationFailureHandler())
                         .permitAll()
-//                        .failureUrl("/member/oauth/new")
                 )
                 .logout((out) -> out
                         .logoutUrl("/member/logout")
-                        .logoutSuccessUrl("/member/logout")
+                        .logoutSuccessUrl("/")
                         .deleteCookies("JSESSIONID")
                 );
 
