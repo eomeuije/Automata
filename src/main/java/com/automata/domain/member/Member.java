@@ -2,6 +2,7 @@ package com.automata.domain.member;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.lang.NonNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,7 +14,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Entity
-@Table(name = "seller_member")
+@Table(name = "member")
 public class Member implements UserDetails, OAuth2User {
 
     @Id

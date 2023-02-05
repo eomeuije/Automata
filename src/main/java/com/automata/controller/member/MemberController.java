@@ -1,18 +1,14 @@
 package com.automata.controller.member;
 
 import com.automata.domain.member.Member;
-import com.automata.service.MemberService;
+import com.automata.service.security.MemberFormUserService;
+import com.automata.service.security.MemberOAuth2UserService;
+import com.automata.service.security.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,39 +17,41 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/member")
 public class MemberController {
 
-    private MemberService memberService;
+    private final MemberOAuth2UserService memberOAuth2UserService;
+    private final MemberFormUserService memberFormUserService;
 
     @Autowired
-    public MemberController(MemberService memberService) {
-        this.memberService = memberService;
+    public MemberController(MemberOAuth2UserService memberOAuth2UserService, MemberFormUserService memberFormUserService) {
+        this.memberOAuth2UserService = memberOAuth2UserService;
+        this.memberFormUserService = memberFormUserService;
     }
 
     @GetMapping("/login")
-    public String login(Model model) {
+    public String login() {
         return "/member/login";
     }
 
     @GetMapping("/new")
-    public String newMemberGet(Model model) {
+    public String newMemberGet() {
         return "/member/new";
     }
 
     @PostMapping("/new")
     public String newMemberPost(Member member) {
-        memberService.save(member);
+        memberFormUserService.save(member);
         return "redirect:/";
     }
 
     @GetMapping("/oauth/new")
-    public String newOAuthRequest(Model model) {
+    public String newOAuthRequest() {
         return "/member/oauth/new";
     }
 
     @PostMapping("/oauth/new")
-    public String newOAuthRequest(Model model, HttpServletRequest request) {
-        Authentication authentication = memberService.findOAuth2UserBySession(request.getSession());
-        memberService.login(authentication);
-        memberService.save((Member) authentication.getPrincipal());
-        return "redirect:/";
+    public String newOAuthRequest(HttpServletRequest request) {
+        Authentication authentication = memberOAuth2UserService.findOAuth2UserBySession(request.getSession());
+        memberOAuth2UserService.login(authentication);
+        memberOAuth2UserService.save((Member) authentication.getPrincipal());
+        return "redirect:" + memberOAuth2UserService.getRedirectUrl(request);
     }
 }

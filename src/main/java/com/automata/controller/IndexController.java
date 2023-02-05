@@ -11,18 +11,18 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class IndexController {
 
-    @GetMapping({"/", "/home"})
-    public String index(Model model) {
+    @GetMapping({"/", "/index"})
+    public String index() {
         return "home";
     }
 
-    @GetMapping("/index")
-    public String i(Model model) {
+    @GetMapping("/home")
+    public String home() {
         return "index";
     }
 
     @GetMapping("/hello")
-    public String hello(Model model, @AuthenticationPrincipal Member member, HttpServletRequest request, HttpServletRequest sr) {
+    public String hello(Model model, @AuthenticationPrincipal Member member) {
         model.addAttribute("name", member.getName());
         model.addAttribute("nickName", member.getNickName());
         return "hello";

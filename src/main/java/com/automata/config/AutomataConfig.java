@@ -2,7 +2,9 @@ package com.automata.config;
 
 import com.automata.repository.MemberRepository;
 import com.automata.repository.SpringJpaMemberRepository;
-import com.automata.service.MemberService;
+import com.automata.service.security.MemberFormUserService;
+import com.automata.service.security.MemberOAuth2UserService;
+import com.automata.service.security.MemberService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -17,7 +19,12 @@ public class AutomataConfig {
     }
 
     @Bean
-    public MemberService memberService() {
-        return new MemberService(PasswordEncoderFactories.createDelegatingPasswordEncoder());
+    public MemberFormUserService memberFormUserService() {
+        return new MemberFormUserService(memberRepository, PasswordEncoderFactories.createDelegatingPasswordEncoder());
+    }
+
+    @Bean
+    public MemberOAuth2UserService memberOAuth2UserService() {
+        return new MemberOAuth2UserService(memberRepository, PasswordEncoderFactories.createDelegatingPasswordEncoder());
     }
 }
