@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>my items</title>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+</head>
+<body>
+<table id="items-table">
+
+</table>
+<script type="text/javascript">
+    function getItems() {
+        $.ajax({
+            type: "GET",
+            url: "/item/s",
+            data: {isMine: true},
+            dataType: "html"
+        })
+            .done(function (result) {
+                console.log(result);
+                $("#items-table").replaceWith(result);
+            })
+            .fail(function(jqXHR) {
+                console.log(jqXHR);
+            })
+    }
+    getItems();
+</script>
+
+<form th:action="@{/item/new}" method="GET">
+  <button class="btn btn-info" type="submit">상품 등록</button>
+</form>
+</body>
+</html>

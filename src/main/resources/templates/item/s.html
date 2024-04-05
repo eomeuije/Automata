@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org ">
+
+<table>
+    <tr th:each="item:${items}" th:onclick="'redirectToPage(\'/item/detail/' + ${item.id} + '\')'">
+        <td th:text="${item.name}"></td>
+        <td th:text="${item.price}"></td>
+        <td th:text="${item.detail}"></td>
+        <td th:text="${item.owner.nickName}"></td>
+    </tr>
+</table>
+<script>
+    redirectToPage = (url) => window.location.href = url;
+</script>
+
+</html>

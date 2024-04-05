@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org ">
+
+<table>
+    <td th:text="${item.name}"></td>
+    <td th:text="${item.price}"></td>
+    <td th:text="${item.detail}"></td>
+    <td th:text="${item.owner.nickName}"></td>
+</table>
+<button >구매</button>
+<script>
+    redirectToPage = (url) => window.location.href = url;
+</script>
+
+</html>

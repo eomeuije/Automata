@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>member info</title>
+</head>
+<body>
+<section>
+    <h2>개인 정보</h2>
+    <p><strong>아이디:</strong> <span th:text="${member.name}"></span></p>
+    <p><strong>닉네임:</strong> <span th:text="${member.nickName}"></span></p>
+    <p><strong>이메일:</strong> <span th:text="${member.email}"></span></p>
+    <!-- 프로필 이미지 -->
+<!--    <img src="profile.jpg" alt="프로필 이미지">-->
+</section>
+
+<!-- 계정 정보 섹션 -->
+<section>
+    <h2>계정 정보</h2>
+    <p><strong>로그인 타입:</strong> <span th:text="${member.getLoginTypeDescription()}"></span></p>
+    <p><strong>계정 상태:</strong> 활성</p>
+</section>
+
+<!--<section>-->
+<!--    <h2>주소 및 연락처</h2>-->
+<!--    <p><strong>주소:</strong> 서울특별시 강남구</p>-->
+<!--    <p><strong>전화번호:</strong> 010-1234-5678</p>-->
+<!--    <p><strong>이메일 주소:</strong> johndoe@example.com</p>-->
+<!--</section>-->
+</body>
+</html>
